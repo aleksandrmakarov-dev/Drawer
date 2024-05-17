@@ -26,10 +26,8 @@ const List = <T,>({
 
   if (isError) return errorView;
 
-  if (data?.length === 0) return emptyView;
-
   return (
-    <div className={cn("flex flex-col p-2", className)} {...other}>
+    <div className={cn("flex flex-col", className)} {...other}>
       {data?.map((item) => render(item))}
     </div>
   );
