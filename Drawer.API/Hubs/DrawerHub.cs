@@ -37,7 +37,7 @@ namespace Drawer.API.Hubs
 
             await Clients.All.LeaveGroupMessage(new LeaveGroupMessage
             {
-                Sender = new Sender
+                Caller = new UserModel
                 {
                     Id = Context.ConnectionId,
                     Username = foundUser.Username
@@ -72,10 +72,27 @@ namespace Drawer.API.Hubs
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
 
-            await Clients.Group(groupId).JoinGroupMessage(new JoinGroupMessage
+            List<UserModel> usersInGroup = await _context.Users.Where(u => u.GroupId == groupId).Select(u =>
+                new UserModel
+                {
+                    Id = u.ConnectionId,
+                    Username = u.Username
+                }).ToListAsync();
+
+            await Clients.Caller.JoinGroupCallerMessage(new JoinGroupCallerMessage
             {
                 GroupId = groupId,
-                Sender = new Sender
+                Caller = new UserModel
+                {
+                    Id = Context.ConnectionId,
+                    Username = username
+                },
+                Users = usersInGroup
+            });
+
+            await Clients.OthersInGroup(groupId).JoinGroupMessage(new JoinGroupMessage
+            {
+                Caller = new UserModel
                 {
                     Id = Context.ConnectionId,
                     Username = username
@@ -90,7 +107,7 @@ namespace Drawer.API.Hubs
             await Clients.Group(foundUser.GroupId).ReceiveTextMessage(new ReceiveTextMessage
             {
                 Text = text,
-                Sender = new Sender
+                Caller = new UserModel
                 {
                     Id = Context.ConnectionId,
                     Username = foundUser?.Username
@@ -102,6 +119,7 @@ namespace Drawer.API.Hubs
     public interface IDrawerClient
     {
         public Task ReceiveTextMessage(ReceiveTextMessage message);
+        public Task JoinGroupCallerMessage(JoinGroupCallerMessage message);
         public Task JoinGroupMessage(JoinGroupMessage message);
         public Task LeaveGroupMessage(LeaveGroupMessage message);
     }

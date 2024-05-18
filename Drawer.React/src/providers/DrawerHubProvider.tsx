@@ -1,4 +1,5 @@
 import {
+  JoinGroupCallerMessage,
   JoinGroupMessage,
   LeaveGroupMessage,
   ReceiveTextMessage,
@@ -21,6 +22,9 @@ type DrawerHubContextData = {
   state: HubConnectionState;
   joinGroup: (groupId?: string) => Promise<any> | undefined;
   onJoinGroup: (newMethod: (args: JoinGroupMessage) => void) => void;
+  onJoinCallerGroup: (
+    newMethod: (args: JoinGroupCallerMessage) => void
+  ) => void;
   sendText: (text: string) => void;
   onReceiveText: (newMethod: (args: ReceiveTextMessage) => void) => void;
   onLeaveGroup: (newMethod: (args: LeaveGroupMessage) => void) => void;
@@ -60,6 +64,12 @@ const DrawerHubProvider: FC<PropsWithChildren> = ({ children }) => {
     hub.on("JoinGroupMessage", newMethod);
   };
 
+  const onJoinGroupCaller = (
+    newMethod: (args: JoinGroupCallerMessage) => void
+  ) => {
+    hub.on("JoinGroupCallerMessage", newMethod);
+  };
+
   const onReceiveText = (newMethod: (args: ReceiveTextMessage) => void) => {
     hub.on("ReceiveTextMessage", newMethod);
   };
@@ -74,6 +84,7 @@ const DrawerHubProvider: FC<PropsWithChildren> = ({ children }) => {
         state: state,
         joinGroup: joinGroup,
         onJoinGroup: onJoinGroup,
+        onJoinCallerGroup: onJoinGroupCaller,
         sendText: sendText,
         onReceiveText: onReceiveText,
         onLeaveGroup: onLeaveGroup,

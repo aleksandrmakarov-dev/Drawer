@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { MessagesListItemData } from "@/types";
 import { FC } from "react";
+import { MessagesListItemData } from "../types";
 
 interface MessagesListItemProps {
   message: MessagesListItemData;
@@ -14,7 +14,7 @@ const MessagesListItem: FC<MessagesListItemProps> = ({ message }) => {
         "text-green-600 font-medium": message.variant === "positive",
       })}
     >
-      {message.sender && <span className="font-medium">{message.sender}</span>}{" "}
+      {message.caller && <span className="font-medium">{message.caller}</span>}{" "}
       {message.text}
     </p>
   );

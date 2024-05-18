@@ -13,29 +13,26 @@ export type ProblemDetails = {
   detail?: string;
 };
 
-export type Sender = {
+export type UserModel = {
   id: string;
   username: string;
 };
 
 export type JoinGroupMessage = {
+  caller: UserModel;
+};
+
+export type JoinGroupCallerMessage = {
   groupId: string;
-  sender: Sender;
+  caller: UserModel;
+  users: UserModel[];
 };
 
 export type ReceiveTextMessage = {
   text: string;
-  sender?: Sender;
+  caller?: UserModel;
 };
 
 export type LeaveGroupMessage = {
-  sender: Sender;
-};
-
-export type MessageVariant = "default" | "positive" | "negative";
-
-export type MessagesListItemData = {
-  text: string;
-  sender?: string;
-  variant?: MessageVariant;
+  caller: UserModel;
 };

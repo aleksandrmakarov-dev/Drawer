@@ -2,6 +2,6 @@
 {
     public class LeaveGroupMessage
     {
-        public Sender Sender { get; set; }
+        public UserModel Caller { get; set; }
     }
 }
