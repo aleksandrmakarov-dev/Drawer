@@ -2,6 +2,8 @@ import {
   JoinGroupCallerMessage,
   JoinGroupMessage,
   LeaveGroupMessage,
+  MouseDownMessage,
+  MousePositionMessage,
   ReceiveTextMessage,
 } from "@/types";
 import {
@@ -28,6 +30,12 @@ type DrawerHubContextData = {
   sendText: (text: string) => void;
   onReceiveText: (newMethod: (args: ReceiveTextMessage) => void) => void;
   onLeaveGroup: (newMethod: (args: LeaveGroupMessage) => void) => void;
+  mouseDown: (position: MouseDownMessage) => void;
+  mouseMove: (position: MousePositionMessage) => void;
+  mouseUp: () => void;
+  onMouseDown: (newMethod: (args: MouseDownMessage) => void) => void;
+  onMouseUp: (newMethod: () => void) => void;
+  onMouseMove: (newMethod: (args: MousePositionMessage) => void) => void;
 };
 
 const DrawerHubContext = createContext<DrawerHubContextData | null>(null);
@@ -60,6 +68,18 @@ const DrawerHubProvider: FC<PropsWithChildren> = ({ children }) => {
     hub.invoke("SendText", text);
   };
 
+  const mouseDown = (position: MouseDownMessage) => {
+    hub.invoke("MouseDown", position);
+  };
+
+  const mouseUp = () => {
+    hub.invoke("MouseUp");
+  };
+
+  const mouseMove = (position: MousePositionMessage) => {
+    hub.invoke("MouseMove", position);
+  };
+
   const onJoinGroup = (newMethod: (args: JoinGroupMessage) => void) => {
     hub.on("JoinGroupMessage", newMethod);
   };
@@ -78,6 +98,18 @@ const DrawerHubProvider: FC<PropsWithChildren> = ({ children }) => {
     hub.on("LeaveGroupMessage", newMethod);
   };
 
+  const onMouseDown = (newMethod: (args: MouseDownMessage) => void) => {
+    hub.on("MouseDownMessage", newMethod);
+  };
+
+  const onMouseMove = (newMethod: (args: MousePositionMessage) => void) => {
+    hub.on("MouseMoveMessage", newMethod);
+  };
+
+  const onMouseUp = (newMethod: () => void) => {
+    hub.on("MouseUpMessage", newMethod);
+  };
+
   return (
     <DrawerHubContext.Provider
       value={{
@@ -88,6 +120,12 @@ const DrawerHubProvider: FC<PropsWithChildren> = ({ children }) => {
         sendText: sendText,
         onReceiveText: onReceiveText,
         onLeaveGroup: onLeaveGroup,
+        mouseDown: mouseDown,
+        mouseUp: mouseUp,
+        mouseMove: mouseMove,
+        onMouseDown: onMouseDown,
+        onMouseMove: onMouseMove,
+        onMouseUp: onMouseUp,
       }}
     >
       {children}
@@ -101,7 +139,7 @@ export const useDrawerHub = () => {
   const context = useContext<DrawerHubContextData | null>(DrawerHubContext);
 
   if (!context) {
-    throw new Error("useDrawerHub can only be used inside DrawerHubProvider");
+    throw new Error("useDrawerHub can only be used inside DrawerHubContext");
   }
 
   return context;

@@ -1,3 +1,5 @@
+import { Point } from "@/modules/canvas/types";
+
 export type ObjectId = {
   id: string;
 };
@@ -35,4 +37,16 @@ export type ReceiveTextMessage = {
 
 export type LeaveGroupMessage = {
   caller: UserModel;
+};
+
+export type MousePositionMessage = {
+  x: number;
+  y: number;
+};
+
+export type MouseDownMessage = {
+  x: number;
+  y: number;
+  lineWidth: number;
+  color: string;
 };

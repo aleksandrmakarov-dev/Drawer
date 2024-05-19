@@ -1,7 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import { FC } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Group from "./Group";
+import Game from "./Game";
 
 const router = createBrowserRouter([
   {
@@ -10,11 +10,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Group />,
+        element: <Game />,
       },
       {
         path: ":id",
-        element: <Group />,
+        element: <Game />,
       },
     ],
   },

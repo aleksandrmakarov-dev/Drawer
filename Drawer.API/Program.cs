@@ -9,10 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContext<ApplicationDbContext>((options) =>
-{
-    options.UseInMemoryDatabase("local");
-});
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

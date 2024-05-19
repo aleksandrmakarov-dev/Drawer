@@ -5,8 +5,3 @@ export type MessagesListItemData = {
   caller?: string;
   variant?: MessageVariant;
 };
-
-export type UsersListItemData = {
-  id: string;
-  username: string;
-};

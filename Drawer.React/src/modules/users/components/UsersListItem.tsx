@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { UsersListItemData } from "../types";
 import { UserRound } from "lucide-react";
+import { UsersListItemData } from "../types";
 
 interface UsersListItemProps {
   user: UsersListItemData;

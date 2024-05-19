@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import List from "../../../components/common/List";
 import { useDrawerHub } from "@/providers/DrawerHubProvider";
-import { UsersListItemData } from "../types";
 import UsersListItem from "./UsersListItem";
+import { UsersListItemData } from "../types";
 
 const UsersList: FC = () => {
   const hub = useDrawerHub();
